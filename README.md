@@ -36,6 +36,8 @@
 - 表格
 - 分割线
 - 图片 / 链接
+- 代码块 / 行内代码
+- 增强内容组件（tip / warning / summary / cta）
 
 ### 2. 本地预览
 
@@ -109,6 +111,28 @@ python3 scripts/format.py --file article.md --template
 
 ```bash
 python3 scripts/format.py --file article.md --output article.preview.html --template
+```
+
+### 1.1) 使用增强内容组件
+
+支持几种适合公众号阅读的轻量块：
+
+```markdown
+::: tip
+这是一个重点提示。
+:::
+
+::: warning
+这里写风险提醒或注意事项。
+:::
+
+::: summary
+这一节最重要的结论放这里。
+:::
+
+::: cta
+如果你也想搭这套工作流，可以先从排版 + 草稿发布开始。
+:::
 ```
 
 ### 2) 发布到草稿箱
@@ -195,6 +219,7 @@ wechat-mp/
 - [ ] 多公众号账号选择与切换
 - [ ] 本地图片自动上传并替换正文链接
 - [ ] 更稳健的 Markdown 解析
+- [ ] 更完整的组件系统（steps / faq / compare / data-cards）
 - [ ] 模板 / 主题系统
 - [ ] 更完善的错误提示与重试机制
 - [ ] 草稿发布结果结构化输出

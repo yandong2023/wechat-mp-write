@@ -13,7 +13,7 @@ import mimetypes
 
 APP_ID = os.getenv("WECHAT_MP_APP_ID")
 APP_SECRET = os.getenv("WECHAT_MP_APP_SECRET")
-CONFIG_FILE = os.getenv("WECHAT_MP_CONFIG", "/Users/yandong/.openclaw/wechat-config.json")
+CONFIG_FILE = os.getenv("WECHAT_MP_CONFIG", str(Path.home() / ".openclaw" / "wechat-config.json"))
 
 def load_config():
     """加载配置"""

@@ -20,13 +20,13 @@ description: 微信公众号文章排版、编辑和发布。支持 Markdown 转
 
 确保环境变量已设置：
 ```bash
-export WECHAT_MP_APP_ID="wx672539caabdcc349"
-export WECHAT_MP_APP_SECRET="32f4359cc7795a982c291e93b377092c"
+export WECHAT_MP_APP_ID="你的公众号 AppID"
+export WECHAT_MP_APP_SECRET="你的公众号 AppSecret"
 ```
 
 或使用配置文件：
 ```bash
-export WECHAT_MP_CONFIG="/Users/yandong/.openclaw/wechat-config.json"
+export WECHAT_MP_CONFIG="$HOME/.openclaw/wechat-config.json"
 ```
 
 ### 2. 发布文章
@@ -108,8 +108,7 @@ wechat-mp/
 │   ├── api.md            # 微信 API 文档
 │   └── styling.md        # 排版样式指南
 └── assets/
-    ├── template.html     # HTML 模板
-    └── default-cover.png # 默认封面
+    └── template.html     # HTML 模板
 ```
 
 ## 高级用法
@@ -127,7 +126,7 @@ wechat-mp/
 使用 cron 定时任务：
 ```bash
 # 每天早上 8 点发布
-0 8 * * * cd /Users/yandong/clawd && python3 skills/wechat-mp/scripts/publish.py --file today.md
+0 8 * * * cd /path/to/project && python3 skills/wechat-mp/scripts/publish.py --file today.md
 ```
 
 ## 故障排查

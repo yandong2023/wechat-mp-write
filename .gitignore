@@ -1,5 +1,16 @@
 .DS_Store
-node_modules/
+__pycache__/
+*.pyc
 .env
 .env.*
 *.log
+
+# local/generated outputs
+*.png
+*.jpg
+*.jpeg
+*.svg
+media_ids.json
+cover_media_ids*.json
+formatted.html
+output/

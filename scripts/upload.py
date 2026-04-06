@@ -164,11 +164,11 @@ def main():
     # 上传
     print(f"📤 正在上传: {file_path.name}")
     
-    if args.temp or args.type == 'thumb':
+    if args.temp:
         # 临时素材（用于图文消息内图片）
         result = upload_image(token, file_path)
     else:
-        # 永久素材
+        # 永久素材（包含 thumb）
         result = upload_material(token, file_path, args.type)
     
     if result['success']:

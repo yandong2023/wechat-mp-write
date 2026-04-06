@@ -158,6 +158,8 @@ python3 scripts/format.py --file article.md --theme tech-dark --template
 python3 scripts/publish.py --file article.md --title "文章标题"
 ```
 
+如果 Markdown 第一行是 `# 文章标题`，且和传入的 `--title` 一致，发布时会自动去掉正文里的重复标题，避免公众号里出现“标题显示两遍”。
+
 带作者和摘要：
 
 ```bash

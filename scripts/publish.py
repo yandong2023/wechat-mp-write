@@ -98,6 +98,19 @@ def escape_html(text):
     text = text.replace('>', '&gt;')
     return text
 
+def strip_duplicate_title(content, title=None):
+    """如果正文第一行标题和文章标题一致，则移除正文里的重复标题。"""
+    if not title:
+        return content
+    lines = content.split('\n')
+    if not lines:
+        return content
+    first_line = lines[0].strip()
+    if first_line.startswith('# ') and first_line[2:].strip() == title.strip():
+        return '\n'.join(lines[1:]).lstrip('\n')
+    return content
+
+
 def markdown_to_wechat_html(content):
     """
     Markdown 转微信公众号 HTML（严格符合微信规范）
@@ -280,6 +293,9 @@ def main():
             title = "未命名文章"
     
     print(f"📝 文章标题: {title}")
+
+    # 如果正文首行标题和文章标题相同，则去掉正文里的重复标题
+    content = strip_duplicate_title(content, title)
     
     # 转换 HTML
     print("🎨 正在排版...")

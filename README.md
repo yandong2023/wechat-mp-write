@@ -113,6 +113,23 @@ python3 scripts/format.py --file article.md --template
 python3 scripts/format.py --file article.md --output article.preview.html --template
 ```
 
+### 1.0) 选择排版主题
+
+现在支持几套可直接调用的主题：
+- `default`
+- `wechat-native`
+- `medium-clean`
+- `notion-soft`
+- `tech-dark`
+
+示例：
+
+```bash
+python3 scripts/format.py --file article.md --theme wechat-native --template
+python3 scripts/format.py --file article.md --theme medium-clean --template
+python3 scripts/format.py --file article.md --theme tech-dark --template
+```
+
 ### 1.1) 使用增强内容组件
 
 支持几种适合公众号阅读的轻量块：
@@ -220,7 +237,8 @@ wechat-mp/
 - [ ] 本地图片自动上传并替换正文链接
 - [ ] 更稳健的 Markdown 解析
 - [ ] 更完整的组件系统（steps / faq / compare / data-cards）
-- [ ] 模板 / 主题系统
+- [x] 基础模板 / 主题系统
+- [ ] 更细颗粒度的品牌主题系统（按账号/栏目）
 - [ ] 更完善的错误提示与重试机制
 - [ ] 草稿发布结果结构化输出
 - [ ] 和 `wechat-mp-write` 的接口进一步标准化

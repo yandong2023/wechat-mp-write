@@ -9,7 +9,7 @@ from html import escape
 from pathlib import Path
 
 # 默认样式配置
-STYLES = {
+BASE_STYLES = {
     "body": "font-size:16px;line-height:1.8;margin:10px 0;color:#333;text-align:justify;",
     "h1": "font-size:22px;font-weight:bold;text-align:center;margin:25px 0;color:#000;line-height:1.4;",
     "h2": "font-size:18px;font-weight:bold;margin:20px 0;color:#1aad19;border-left:4px solid #1aad19;padding-left:10px;line-height:1.5;",
@@ -29,7 +29,77 @@ STYLES = {
     "warning": "margin:18px 0;padding:14px 16px;background:#fff7e6;border-left:4px solid #fa8c16;border-radius:8px;color:#8c4a00;",
     "summary": "margin:18px 0;padding:14px 16px;background:#f0f5ff;border-left:4px solid #2f54eb;border-radius:8px;color:#1d39c4;",
     "cta": "margin:22px 0;padding:16px 18px;background:#fffbe6;border:1px solid #ffe58f;border-radius:10px;color:#614700;",
+    "page_bg": "#f5f5f5",
+    "page_font": "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif",
+    "container_bg": "white",
+    "container_shadow": "0 2px 10px rgba(0,0,0,0.1)",
 }
+
+THEMES = {
+    "default": {},
+    "wechat-native": {
+        "body": "font-size:17px;line-height:1.78;margin:12px 0;color:#2f2f2f;text-align:justify;",
+        "h1": "font-size:24px;font-weight:700;text-align:left;margin:8px 0 24px;color:#111;line-height:1.4;",
+        "h2": "font-size:19px;font-weight:700;margin:28px 0 14px;color:#111;line-height:1.45;border-left:none;padding-left:0;",
+        "h3": "font-size:17px;font-weight:700;margin:20px 0 12px;color:#222;line-height:1.45;",
+        "blockquote": "border-left:3px solid #d9d9d9;padding:2px 0 2px 16px;margin:20px 0;background:transparent;color:#666;font-size:16px;",
+        "link": "color:#576b95;text-decoration:none;",
+        "table_header": "background:#fafafa;padding:10px;border:1px solid #e5e5e5;font-weight:bold;",
+        "table_cell": "padding:10px;border:1px solid #e5e5e5;vertical-align:top;",
+        "tip": "margin:18px 0;padding:14px 16px;background:#f7f7f7;border-left:3px solid #d9d9d9;border-radius:6px;color:#555;",
+        "summary": "margin:18px 0;padding:14px 16px;background:#f7f7f7;border-left:3px solid #07c160;border-radius:6px;color:#333;",
+        "cta": "margin:22px 0;padding:16px 18px;background:#f7f7f7;border:1px solid #e5e5e5;border-radius:8px;color:#333;",
+    },
+    "medium-clean": {
+        "body": "font-size:18px;line-height:1.9;margin:14px 0;color:#242424;text-align:left;",
+        "h1": "font-size:30px;font-weight:800;text-align:left;margin:10px 0 28px;color:#1a1a1a;line-height:1.25;",
+        "h2": "font-size:24px;font-weight:800;margin:34px 0 16px;color:#1a1a1a;border-left:none;padding-left:0;line-height:1.35;",
+        "h3": "font-size:20px;font-weight:700;margin:26px 0 12px;color:#1f1f1f;line-height:1.4;",
+        "blockquote": "border-left:4px solid #1a8917;padding:4px 0 4px 18px;margin:24px 0;background:transparent;color:#555;font-size:17px;",
+        "link": "color:#1a8917;text-decoration:none;",
+        "code_block": "background:#f9f9f9;padding:18px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.7;color:#333;",
+        "tip": "margin:20px 0;padding:16px 18px;background:#f3fdf4;border-left:4px solid #1a8917;border-radius:8px;color:#216e1f;",
+        "summary": "margin:20px 0;padding:16px 18px;background:#f7f7f7;border-left:4px solid #1a8917;border-radius:8px;color:#333;",
+    },
+    "notion-soft": {
+        "body": "font-size:16px;line-height:1.85;margin:10px 0;color:#37352f;text-align:justify;",
+        "h1": "font-size:28px;font-weight:700;text-align:left;margin:8px 0 24px;color:#2f3437;line-height:1.3;",
+        "h2": "font-size:22px;font-weight:700;margin:28px 0 14px;color:#2f3437;border-left:none;padding-left:0;line-height:1.4;",
+        "h3": "font-size:18px;font-weight:600;margin:22px 0 10px;color:#37352f;line-height:1.45;",
+        "blockquote": "border-left:3px solid #d3d1cb;padding:4px 0 4px 16px;margin:18px 0;background:#fbfbfa;color:#6b6b6b;font-size:15px;",
+        "link": "color:#0b6e99;text-decoration:none;",
+        "table_header": "background:#f7f6f3;padding:10px;border:1px solid #e9e9e7;font-weight:bold;",
+        "table_cell": "padding:10px;border:1px solid #e9e9e7;vertical-align:top;",
+        "inline_code": "background:#f1f1ef;color:#eb5757;padding:2px 6px;border-radius:4px;font-family:Menlo,Monaco,Consolas,monospace;font-size:0.92em;",
+        "code_block": "background:#f7f6f3;padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;color:#37352f;",
+        "tip": "margin:18px 0;padding:14px 16px;background:#f7f6f3;border-left:4px solid #9b9a97;border-radius:8px;color:#37352f;",
+        "warning": "margin:18px 0;padding:14px 16px;background:#fff4e5;border-left:4px solid #d9730d;border-radius:8px;color:#8a4b08;",
+        "summary": "margin:18px 0;padding:14px 16px;background:#eef3ff;border-left:4px solid #4c6ef5;border-radius:8px;color:#2b4acb;",
+    },
+    "tech-dark": {
+        "body": "font-size:16px;line-height:1.85;margin:10px 0;color:#d7dde7;text-align:justify;",
+        "h1": "font-size:28px;font-weight:800;text-align:left;margin:8px 0 24px;color:#ffffff;line-height:1.3;",
+        "h2": "font-size:21px;font-weight:700;margin:28px 0 14px;color:#7cc7ff;border-left:4px solid #2f9bff;padding-left:12px;line-height:1.4;",
+        "h3": "font-size:18px;font-weight:700;margin:20px 0 10px;color:#dbeafe;line-height:1.45;",
+        "strong": "color:#ffffff;font-weight:bold;",
+        "blockquote": "border-left:3px solid #2f9bff;padding:10px 15px;margin:15px 0;background:#111a2c;color:#bcd0ee;font-size:15px;",
+        "link": "color:#7cc7ff;text-decoration:none;",
+        "table_header": "background:#162033;padding:10px;border:1px solid #2b3952;font-weight:bold;",
+        "table_cell": "padding:10px;border:1px solid #2b3952;vertical-align:top;",
+        "divider": "border:none;border-top:1px solid #24324a;margin:22px 0;",
+        "code_block": "background:#111827;padding:16px;border-radius:8px;overflow-x:auto;font-size:14px;line-height:1.6;color:#d1e7ff;",
+        "inline_code": "background:#1f2937;color:#7dd3fc;padding:2px 6px;border-radius:4px;font-family:Menlo,Monaco,Consolas,monospace;font-size:0.92em;",
+        "tip": "margin:18px 0;padding:14px 16px;background:#112a1f;border-left:4px solid #22c55e;border-radius:8px;color:#b7f7c5;",
+        "warning": "margin:18px 0;padding:14px 16px;background:#2b1d12;border-left:4px solid #f59e0b;border-radius:8px;color:#ffd8a8;",
+        "summary": "margin:18px 0;padding:14px 16px;background:#111a2c;border-left:4px solid #2f9bff;border-radius:8px;color:#bcd0ee;",
+        "cta": "margin:22px 0;padding:16px 18px;background:#0f172a;border:1px solid #2f9bff;border-radius:10px;color:#dbeafe;",
+        "page_bg": "#0b1020",
+        "container_bg": "#0f172a",
+        "container_shadow": "0 4px 24px rgba(0,0,0,0.35)",
+    },
+}
+
+STYLES = dict(BASE_STYLES)
 
 BLOCK_TAGS = (
     '<h1', '<h2', '<h3', '<blockquote', '<ul', '<ol', '<table', '<hr', '<pre',
@@ -135,10 +205,18 @@ def strip_unconverted_markdown(text):
     return text
 
 
-def markdown_to_wechat(content, custom_styles=None):
-    """将 Markdown 转换为微信公众号 HTML。"""
+def build_styles(theme='default', custom_styles=None):
+    styles = dict(BASE_STYLES)
+    styles.update(THEMES.get(theme, {}))
     if custom_styles:
-        STYLES.update(custom_styles)
+        styles.update(custom_styles)
+    return styles
+
+
+def markdown_to_wechat(content, custom_styles=None, theme='default'):
+    """将 Markdown 转换为微信公众号 HTML。"""
+    global STYLES
+    STYLES = build_styles(theme, custom_styles)
 
     # fenced components
     content = re.sub(
@@ -212,8 +290,8 @@ def add_wechat_template(html_content, title=""):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title}</title>
     <style>
-        body {{ margin: 0; padding: 20px; background: #f5f5f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; }}
-        .article {{ max-width: 680px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
+        body {{ margin: 0; padding: 20px; background: {STYLES["page_bg"]}; font-family: {STYLES["page_font"]}; }}
+        .article {{ max-width: 680px; margin: 0 auto; background: {STYLES["container_bg"]}; padding: 30px; border-radius: 8px; box-shadow: {STYLES["container_shadow"]}; }}
     </style>
 </head>
 <body>
@@ -230,6 +308,7 @@ def main():
     parser.add_argument('--file', '-f', required=True, help='Markdown 文件路径')
     parser.add_argument('--output', '-o', help='输出文件路径')
     parser.add_argument('--title', '-t', help='文章标题')
+    parser.add_argument('--theme', default='default', choices=sorted(THEMES.keys()), help='排版风格主题')
     parser.add_argument('--template', action='store_true', help='添加完整 HTML 模板')
     args = parser.parse_args()
 
@@ -246,9 +325,9 @@ def main():
         if first_line.startswith('# '):
             title = first_line[2:]
 
-    print(f"📝 正在排版: {title or file_path.name}")
+    print(f"📝 正在排版: {title or file_path.name} (theme={args.theme})")
 
-    html = markdown_to_wechat(content)
+    html = markdown_to_wechat(content, theme=args.theme)
 
     if args.template:
         html = add_wechat_template(html, title)

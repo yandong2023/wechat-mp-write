@@ -1,42 +1,84 @@
 # wechat-mp
 
-微信公众号文章排版与草稿发布工具。
+面向微信公众号的 Markdown 排版与草稿发布工具。
 
-这个仓库更偏**发布基础设施**，适合把已经写好的 Markdown 文章：
-- 转成适合公众号的 HTML
-- 本地预览排版效果
-- 上传封面/图片素材
-- 发布到公众号草稿箱
+`wechat-mp` 解决的是公众号内容工作流里最容易碎掉的那一段：**把已经写好的文章，稳定地变成可预览、可上传、可进草稿箱的内容**。
 
-如果你要做的是**从选题、标题、摘要、封面文案，到最终文章写作与账号选择的一整套写稿 workflow**，建议配合更上层的 `wechat-mp-write` skill 使用。
+它不是内容策划工具，也不是完整的写稿 Agent，而是更底层、更可靠的**发布基础设施**。
 
-## Features
+## 它适合做什么
 
-- Markdown → 微信公众号 HTML
-- 本地 HTML 预览
-- 图片/封面素材上传
-- 草稿箱发布
-- 纯 Python 标准库实现，依赖轻
+适合这些场景：
+- 已经有 Markdown 文章，想转成适合公众号的 HTML
+- 想先在本地预览排版效果，再决定要不要发
+- 想上传封面或正文图片，拿到 URL / media_id
+- 想把文章发布到公众号草稿箱
+- 想把这套流程接进更大的 AI 写稿 / 运营 workflow
 
-## Project Structure
+不适合单独解决这些问题：
+- 选题策划
+- 标题 / 摘要 brainstorming
+- 不同公众号账号之间的运营策略选择
+- 从笔记到完整文章的一体化写作流程
 
-```text
-wechat-mp/
-├── SKILL.md
-├── README.md
-├── scripts/
-│   ├── format.py      # Markdown 转公众号 HTML
-│   ├── publish.py     # 发布文章到草稿箱
-│   ├── upload.py      # 上传图片/永久素材
-│   ├── generate_image.py
-│   ├── generate_leonardo.py
-│   └── generate_openrouter.py
-├── references/
-│   ├── api.md
-│   └── styling.md
-└── assets/
-    └── template.html
-```
+这些更适合由上层 `wechat-mp-write` 来做。
+
+## 核心能力
+
+### 1. Markdown → 微信公众号 HTML
+
+把常见 Markdown 结构转成更适合公众号后台的 HTML：
+- 标题
+- 段落
+- 粗体 / 斜体
+- 引用
+- 列表
+- 表格
+- 分割线
+- 图片 / 链接
+
+### 2. 本地预览
+
+在真正发布前先生成本地 HTML，快速检查：
+- 段落节奏是否舒服
+- 标题层级是否清晰
+- 引用 / 表格 / 列表是否容易读
+- 整体是否适合手机阅读
+
+### 3. 图片 / 封面素材上传
+
+支持上传图片素材，获取：
+- 正文图片 URL
+- 永久素材 `media_id`
+
+这一步可以接到封面生成、图片处理、上层发布流程里。
+
+### 4. 草稿箱发布
+
+将已经完成排版的文章发送到公众号草稿箱，作为正式群发前的最后一步。
+
+## 项目定位
+
+这个仓库建议理解成两层架构中的**底层层**：
+
+### `wechat-mp`
+负责：
+- 排版
+- 预览
+- 上传素材
+- 发布草稿
+
+### `wechat-mp-write`
+负责：
+- 选题
+- 标题 / 摘要 / 封面文案
+- 账号选择
+- 文章结构设计
+- 整体写稿与发布 workflow
+
+一句话：
+- `wechat-mp` = **publish engine**
+- `wechat-mp-write` = **writing workflow**
 
 ## Quick Start
 
@@ -49,13 +91,13 @@ export WECHAT_MP_APP_ID="你的公众号 AppID"
 export WECHAT_MP_APP_SECRET="你的公众号 AppSecret"
 ```
 
-也可以指定配置文件：
+也可以用配置文件：
 
 ```bash
 export WECHAT_MP_CONFIG="$HOME/.openclaw/wechat-config.json"
 ```
 
-## Usage
+## 使用方式
 
 ### 1) 本地排版预览
 
@@ -63,7 +105,7 @@ export WECHAT_MP_CONFIG="$HOME/.openclaw/wechat-config.json"
 python3 scripts/format.py --file article.md --template
 ```
 
-或显式指定输出路径：
+或者：
 
 ```bash
 python3 scripts/format.py --file article.md --output article.preview.html --template
@@ -81,19 +123,17 @@ python3 scripts/publish.py --file article.md --title "文章标题"
 python3 scripts/publish.py \
   --file article.md \
   --title "文章标题" \
-  --author "你的署名" \
+  --author "作者名" \
   --digest "文章摘要"
 ```
 
 ### 3) 上传封面或图片素材
 
-上传永久素材：
-
 ```bash
 python3 scripts/upload.py --file cover.png --type image
 ```
 
-如果你已经拿到了封面 `media_id`，发布时可以直接带上：
+如果已经有封面 `media_id`：
 
 ```bash
 python3 scripts/publish.py \
@@ -102,24 +142,66 @@ python3 scripts/publish.py \
   --thumb-media-id "MEDIA_ID"
 ```
 
-## Recommended Workflow
+## 推荐工作流
 
-1. 先写 Markdown
-2. 用 `format.py` 本地预览
-3. 准备并上传封面素材
-4. 用 `publish.py` 发到草稿箱
-5. 登录 `mp.weixin.qq.com` 最终检查并手动发布
+### 最小闭环
+
+1. 写 Markdown
+2. 本地预览
+3. 上传封面 / 图片
+4. 发布到草稿箱
+5. 登录 `mp.weixin.qq.com` 检查后手动发布
+
+### 接入 AI 写稿 workflow
+
+1. 上层 Agent 生成标题 / 摘要 / 正文 / 封面文案
+2. `wechat-mp` 负责排版
+3. `wechat-mp` 负责上传封面素材
+4. `wechat-mp` 负责进入草稿箱
+5. 人工在后台做最终审核
+
+## Project Structure
+
+```text
+wechat-mp/
+├── SKILL.md
+├── README.md
+├── scripts/
+│   ├── format.py
+│   ├── publish.py
+│   ├── upload.py
+│   ├── generate_image.py
+│   ├── generate_leonardo.py
+│   └── generate_openrouter.py
+├── references/
+│   ├── api.md
+│   └── styling.md
+└── assets/
+    └── template.html
+```
+
+## 设计原则
+
+- **先预览，再发布**：重要文章先看效果，不直接盲发
+- **发布层与写作层分离**：降低系统耦合
+- **本地产物不入库**：截图、封面、media_id 缓存都视为临时输出
+- **移动阅读优先**：公众号内容默认先服务手机端阅读体验
+- **人工审核保留在最后一步**：不追求完全无人化
+
+## Roadmap
+
+接下来值得继续做的方向：
+
+- [ ] 多公众号账号选择与切换
+- [ ] 本地图片自动上传并替换正文链接
+- [ ] 更稳健的 Markdown 解析
+- [ ] 模板 / 主题系统
+- [ ] 更完善的错误提示与重试机制
+- [ ] 草稿发布结果结构化输出
+- [ ] 和 `wechat-mp-write` 的接口进一步标准化
 
 ## Notes
 
 - 不要把真实 `AppSecret` 提交到仓库
-- 本仓库不包含真实业务文章和本地生成图片
-- 生成类脚本（如封面生成）更适合本地实验，不建议把批量生成产物直接提交
-
-## Future Improvements
-
-- 更稳健的 Markdown 解析
-- 多公众号账号选择
-- 本地图片自动上传替换
-- 更完整的模板系统
-- 更好的错误提示与重试逻辑
+- 不要把生成图片、缓存文件、临时产物提交到仓库
+- 最终群发前，仍然建议在公众号后台人工检查一次
